@@ -10,16 +10,16 @@ BinaryTree::BinaryTree(const vector<int>& preorder, const vector<int>& inorder)
 	m_root = BuildTree(preorder, 0, inorder, 0, inorder.size() - 1);
 }
 Node* BinaryTree::BuildTree(const vector<int>& preorder, int pre, const vector<int>& inorder, int lh, int rh)
-{//µİ¹éÊµÏÖ
+{//é€’å½’å®ç°
 	if (lh >= rh)
 		return nullptr;
-	int val = preorder[pre];//µÚÒ»¸ö¸ù½Úµã
-	Node* root = new Node(val);//¸³Öµ
+	int val = preorder[pre];//ç¬¬ä¸€ä¸ªæ ¹èŠ‚ç‚¹
+	Node* root = new Node(val);//èµ‹å€¼
 	int index = lh;
 	for (; index <= rh; index++) {
 		if (inorder[index] == val)
-			break;//ÔÚÖĞĞò±éÀúÏòÁ¿ÖĞÕÒ³ö¸ù½Úµã
-		//ÔÚÆä×ó±ßÇÒÎ´±éÀú¹ıµÄÎªÆä×óchild£¬·´Ö®ÒàÈ»£¬ÓÃÓÚÏÂÃæµÄµİ¹é
+			break;//åœ¨ä¸­åºéå†å‘é‡ä¸­æ‰¾å‡ºæ ¹èŠ‚ç‚¹
+		//åœ¨å…¶å·¦è¾¹ä¸”æœªéå†è¿‡çš„ä¸ºå…¶å·¦childï¼Œåä¹‹äº¦ç„¶ï¼Œç”¨äºä¸‹é¢çš„é€’å½’
 	}
 	assert(index <= rh);
 	root->left = BuildTree(preorder, pre + 1, inorder, lh, index - 1);
@@ -27,42 +27,42 @@ Node* BinaryTree::BuildTree(const vector<int>& preorder, int pre, const vector<i
 	return root;
 }
 Node* BinaryTree::BuildTree_Iterative(const vector<int>& preorder, const vector<int>& inorder)
-{//µü´úÊµÏÖ
+{//è¿­ä»£å®ç°
 	assert(preorder.size() == inorder.size());
-	size_t pre = 0, in = 0;//size_tÓÃÀ´¶ÔÊı×éµÄ´óĞ¡»òÕßË÷ÒıµÄ¼ÆËã
-	Node* root = new Node(preorder[pre++]);//´´½¨µÚÒ»¸ö½Úµã
+	size_t pre = 0, in = 0;//size_tç”¨æ¥å¯¹æ•°ç»„çš„å¤§å°æˆ–è€…ç´¢å¼•çš„è®¡ç®—
+	Node* root = new Node(preorder[pre++]);//åˆ›å»ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹
 	stack<Node*> stk;
 	stk.push(root);
 	while (1) {
-		if (inorder[in] == stk.top()->key) {//inorder[0]Îªleftmost½Úµã
+		if (inorder[in] == stk.top()->key) {//inorder[0]ä¸ºleftmostèŠ‚ç‚¹
 			Node* top = stk.top();
 			stk.pop();
 			in++;
-			//¼ì²é
-			if (in == inorder.size())//ÒÑ¾­Íê³É
+			//æ£€æŸ¥
+			if (in == inorder.size())//å·²ç»å®Œæˆ
 				break;
 			if (!stk.empty() && inorder[in] == stk.top()->key)
-				continue;//Õâ¸ö½ÚµãÃ»ÓĞÓÒº¢×Ó
+				continue;//è¿™ä¸ªèŠ‚ç‚¹æ²¡æœ‰å³å­©å­
 			top->right = new Node(preorder[pre++]);
 			stk.push(top->right);	
 		}
-		else {//È·¶¨leftmost½Úµã
+		else {//ç¡®å®šleftmostèŠ‚ç‚¹
 			Node* nd = new Node(preorder[pre++]);
-			stk.top()->left = nd;//Îª¾ÉÕ»¶¥µÄ×ó½Úµã
-			stk.push(nd);//Ñ¡¶¨ĞÂµÄleftmost½ÚµãÔÚÕ»¶¥
+			stk.top()->left = nd;//ä¸ºæ—§æ ˆé¡¶çš„å·¦èŠ‚ç‚¹
+			stk.push(nd);//é€‰å®šæ–°çš„leftmostèŠ‚ç‚¹åœ¨æ ˆé¡¶
 		}
 	}
 	return root;
 }
 BinaryTree::BinaryTree(const BinaryTree& other) :m_root(nullptr)
 {
-	m_root = Clone(other.m_root);//Ö±½Ó¹¹Ôì
+	m_root = Clone(other.m_root);//ç›´æ¥æ„é€ 
 }
 BinaryTree& BinaryTree::operator=(const BinaryTree& rhs)
 {
-	if (this == &rhs)//ÏÈ¼ì²éÊÇ·ñÏàµÈ
+	if (this == &rhs)//å…ˆæ£€æŸ¥æ˜¯å¦ç›¸ç­‰
 		return *this;
-	Reset();//Çå¿Õ
+	Reset();//æ¸…ç©º
 	m_root = Clone(rhs.m_root);
 	return *this;
 }
@@ -102,41 +102,41 @@ Node* BinaryTree::ConvertToThreaded(Node* root)
 	return root;
 }
 void BinaryTree::PreOrder()
-{//Ç°Ğò±éÀúµü´ú½â·¨
-	stack<const Node*> stk;//´´Á¢Õ»
+{//å‰åºéå†è¿­ä»£è§£æ³•
+	stack<const Node*> stk;//åˆ›ç«‹æ ˆ
 	if (m_root)
-		stk.push(m_root);//¸ù½ÚµãÈëÕ»
-	while (!stk.empty())//Ö»ÒªÕ»ÖĞ»¹´æÔÚÔªËØ
+		stk.push(m_root);//æ ¹èŠ‚ç‚¹å…¥æ ˆ
+	while (!stk.empty())//åªè¦æ ˆä¸­è¿˜å­˜åœ¨å…ƒç´ 
 	{
 		const Node* curr = stk.top();
-		stk.pop();//È¡³öµÚÒ»¸ö½Úµã
+		stk.pop();//å–å‡ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹
 		cout << curr->key << endl;
-		if (curr->right)//ÓÒ½ÚµãÏÈÈëÕ»ºó·ÃÎÊ
+		if (curr->right)//å³èŠ‚ç‚¹å…ˆå…¥æ ˆåè®¿é—®
 			stk.push(curr->right);
-		if (curr->left)//×ó½Úµã·´Ö®
+		if (curr->left)//å·¦èŠ‚ç‚¹åä¹‹
 			stk.push(curr->left);
 	}
 }
 void BinaryTree::InOrder()
-{//ÖĞĞò±éÀúµü´ú½â·¨
+{//ä¸­åºéå†è¿­ä»£è§£æ³•
 	stack<const Node*> stk;
 	const Node* curr = m_root;
 	while (!stk.empty() || curr)
 	{
-		if (curr) {//¼ì²é½ÚµãÊÇ·ñ´æÔÚ  if(curr->left)ĞÎÊ½²»±ãÓÚ¼ì²éÓÒ½Úµã
+		if (curr) {//æ£€æŸ¥èŠ‚ç‚¹æ˜¯å¦å­˜åœ¨  if(curr->left)å½¢å¼ä¸ä¾¿äºæ£€æŸ¥å³èŠ‚ç‚¹
 			stk.push(curr);
 			curr = curr->left;
-			continue;//ÈëÕ»ºóÖ±½ÓÑ°ÕÒÏÂÒ»¸ö×ó×Ó½Úµã
+			continue;//å…¥æ ˆåç›´æ¥å¯»æ‰¾ä¸‹ä¸€ä¸ªå·¦å­èŠ‚ç‚¹
 		}
-		//´ïµ½Õ»¶¥
+		//è¾¾åˆ°æ ˆé¡¶
 		curr = stk.top();
 		stk.pop();
-		cout << curr->key << endl;//Êä³ö¶¥½Úµã
-		curr = curr->right;//×ªÏòÓÒ½Úµã
+		cout << curr->key << endl;//è¾“å‡ºé¡¶èŠ‚ç‚¹
+		curr = curr->right;//è½¬å‘å³èŠ‚ç‚¹
 	}
 }
 void BinaryTree::PostOrder()
-{//ºóĞò±éÀúµü´ú½â·¨
+{//ååºéå†è¿­ä»£è§£æ³•
 	stack<const Node*> stk;
 	stack<const Node*> output;
 	if (m_root)
@@ -149,7 +149,7 @@ void BinaryTree::PostOrder()
 		if (curr->left)
 			stk.push(curr->left);
 		if (curr->right)
-			stk.push(curr->right);//ÓÒ½ÚµãºóÈëÕ»ÏÈ³ö£¬ÏÈÈëÊä³öÕ»£¬ºó´òÓ¡
+			stk.push(curr->right);//å³èŠ‚ç‚¹åå…¥æ ˆå…ˆå‡ºï¼Œå…ˆå…¥è¾“å‡ºæ ˆï¼Œåæ‰“å°
 	}
 	while (!output.empty()) {
 		cout << output.top()->key << endl;
@@ -157,7 +157,7 @@ void BinaryTree::PostOrder()
 	}
 }
 void BinaryTree::LevelOrder()
-{//²ã´Î±éÀúµü´ú½â·¨
+{//å±‚æ¬¡éå†è¿­ä»£è§£æ³•
 	queue<const Node*> levelorder;
 	if (m_root)
 		levelorder.push(m_root);
@@ -172,10 +172,10 @@ void BinaryTree::LevelOrder()
 	}
 }
 void BinaryTree::DeepLeaf(Node* outLeaf)
-{//·â×°
+{//å°è£…
 	int maxDepth = -1;
 	DeepLeaf(m_root, 0, &maxDepth, outLeaf);
-	//maxDepth´«ÈëÒıÓÃ¸Ä±äÆäÖµ
+	//maxDepthä¼ å…¥å¼•ç”¨æ”¹å˜å…¶å€¼
 	cout <<" max deepth is" << maxDepth << endl;
 }
 void BinaryTree::DeepLeaf(Node* root, int lvl, int* maxDepth, Node* outLeaf)
@@ -183,12 +183,12 @@ void BinaryTree::DeepLeaf(Node* root, int lvl, int* maxDepth, Node* outLeaf)
 	if (root == nullptr)
 		return;
 	if (!root->left && !root->right) {
-		if (*maxDepth < lvl) {//¼ÇÂ¼×î´óÉî¶ÈºÍºÍ¶ÔÓ¦µÄ½Úµã
+		if (*maxDepth < lvl) {//è®°å½•æœ€å¤§æ·±åº¦å’Œå’Œå¯¹åº”çš„èŠ‚ç‚¹
 			*maxDepth = lvl;
 			outLeaf = root;
 		}
 	}
-	DeepLeaf(root->left, lvl + 1, maxDepth, outLeaf);//µİ¹éÉîÈë
+	DeepLeaf(root->left, lvl + 1, maxDepth, outLeaf);//é€’å½’æ·±å…¥
 	DeepLeaf(root->right, lvl + 1, maxDepth, outLeaf);
 }
 
@@ -203,8 +203,8 @@ void BinaryTree::DeepLeftLeaf(Node* root, bool isleft, int lvl, int* maxDepth, N
 	if (root == nullptr)
 		return;
 	if (!root->left && !root->right && isleft) {
-		*maxDepth = max(lvl, *maxDepth);//¼ÇÂ¼×î´óÖµ
-		outLeaf = root;//¼ÇÂ¼Ëù¶ÔÓ¦½Úµã
+		*maxDepth = max(lvl, *maxDepth);//è®°å½•æœ€å¤§å€¼
+		outLeaf = root;//è®°å½•æ‰€å¯¹åº”èŠ‚ç‚¹
 	}
 
 	DeepLeftLeaf(root->left, true, lvl + 1, maxDepth, outLeaf);
@@ -253,9 +253,9 @@ string BinaryTree::FindPathBetweenRootAndNode(Node* node)
 {
 	assert(m_root != nullptr);
 	string result;
-	Node* flag = m_root;//¼ÇÂ¼µ±Ç°½ÚµãÎ»ÖÃ
+	Node* flag = m_root;//è®°å½•å½“å‰èŠ‚ç‚¹ä½ç½®
 	while (1) {
-		if (node->key == flag->key)//ÕÒµ½Õâ¸ö¸ù½Úµã
+		if (node->key == flag->key)//æ‰¾åˆ°è¿™ä¸ªæ ¹èŠ‚ç‚¹
 		{
 			result+=to_string(flag->key);
 			return result;
@@ -293,7 +293,7 @@ Node* BinaryTree::FindLeastCommonAncestorByRecursion(Node* root, Node* node1, No
 	else if (node1->key <= m_root->key && node2->key >= root->key)
 		return root;
 	else {
-		if (node1->key < root->key) //¶¼ÔÚ×ó×ÓÊ÷
+		if (node1->key < root->key) //éƒ½åœ¨å·¦å­æ ‘
 			FindLeastCommonAncestorByRecursion(root->left,node1,node2);
 		else
 			FindLeastCommonAncestorByRecursion(root->right,node1,node2);
@@ -323,7 +323,7 @@ Node* BinaryTree::Search(Node* node, int x)
 
 Node* BinaryTree::Insert(Node* node, int x)
 {
-	if (!node)//¼´µİ¹éµ½×îºóÒ»¸ö½ÚµãºóÔÙµ÷ÓÃº¯ÊıÊ±£¬node->nextÊÇ¿Õ½Úµã£¬Ò²ÊÇ²åÈëµÄÎ»ÖÃ
+	if (!node)//å³é€’å½’åˆ°æœ€åä¸€ä¸ªèŠ‚ç‚¹åå†è°ƒç”¨å‡½æ•°æ—¶ï¼Œnode->nextæ˜¯ç©ºèŠ‚ç‚¹ï¼Œä¹Ÿæ˜¯æ’å…¥çš„ä½ç½®
 		return new Node(x);
 	if (x < node->key)
 		node->left = Insert(node->left, x);
@@ -334,24 +334,24 @@ Node* BinaryTree::Insert(Node* node, int x)
 
 Node* BinaryTree::Delete(Node* node, int x)
 {
-	if (!node)//µİ¹éµ½×îºóÃ»ÓĞÕÒµ½
+	if (!node)//é€’å½’åˆ°æœ€åæ²¡æœ‰æ‰¾åˆ°
 		return nullptr;
 	if (x < node->key)
-		Delete(node->left, x);
+		node->left = Delete(node->left, x);
 	else if (x > node->key)
-		Delete(node->right, x);
-	else {//ÕÒµ½ÁËÕâ¸ö½Úµã
-		if (node->left && node->right) {//ÓĞÁ½¸öº¢×Ó
-			//Ê×ÏÈÕÒ³öÖ±½Óºó¼Ì½Úµã
-			Node* Suc = FindMin(node->right);//Ö±½Óºó¼ÌÔÚÓÒº¢×ÓµÄleftmost½Úµã
-			node->key = Suc->key;//×ªµ½node
-			Suc->key = x;//×ªÇÒÉèÖÃÎªx
-			Delete(node->right, x);//É¾³ıĞÂnodeÔÚÓÒ×ÓÊ÷ÉÏ±»±ê¼ÇÎªxµÄ½Úµã
+		node->right = Delete(node->right, x);
+	else {//æ‰¾åˆ°äº†è¿™ä¸ªèŠ‚ç‚¹
+		if (node->left && node->right) {//æœ‰ä¸¤ä¸ªå­©å­
+			//é¦–å…ˆæ‰¾å‡ºç›´æ¥åç»§èŠ‚ç‚¹
+			Node* Suc = FindMin(node->right);//ç›´æ¥åç»§åœ¨å³å­©å­çš„leftmostèŠ‚ç‚¹
+			node->key = Suc->key;//è½¬åˆ°node
+			Suc->key = x;//è½¬ä¸”è®¾ç½®ä¸ºx
+			Delete(node->right, x);//åˆ é™¤æ–°nodeåœ¨å³å­æ ‘ä¸Šè¢«æ ‡è®°ä¸ºxçš„èŠ‚ç‚¹
 		}
-		else {//Ö»ÓĞÒ»¸öº¢×Ó»òÕßÃ»ÓĞº¢×Ó
-			Node* curr = node;//¼ÇÂ¼
-			node = node->left ? node->left : node->right;//Ö»ÓĞÒ»¸ö×Ó½áµã»òÕßÃ»ÓĞ
-			delete curr;//É¾³ı
+		else {//åªæœ‰ä¸€ä¸ªå­©å­æˆ–è€…æ²¡æœ‰å­©å­
+			Node* curr = node;//è®°å½•
+			node = node->left ? node->left : node->right;//åªæœ‰ä¸€ä¸ªå­ç»“ç‚¹æˆ–è€…æ²¡æœ‰
+			delete curr;//åˆ é™¤
 		}
 	}
 }
